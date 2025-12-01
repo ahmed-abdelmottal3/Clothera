@@ -1,7 +1,8 @@
+"use client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpSchema, signInSchema, SignUpSchema, SignInSchema } from "@/schema/auth";
-import { registerUser, signInUser } from "@/services/auth";
+import { signUpSchema, signInSchema, forgotPasswordSchema, SignUpSchema, SignInSchema, ForgotPasswordSchema } from "@/schema/auth";
+import { registerUser, signInUser, forgotPassword } from "@/services/auth";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -76,3 +77,45 @@ export const useSignIn = () => {
     isLoading,
   };
 };
+
+export const useForgotPassword = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ForgotPasswordSchema>({
+    resolver: zodResolver(forgotPasswordSchema),
+  });
+
+  const onSubmit = async (data: ForgotPasswordSchema) => {
+    setIsLoading(true);
+    setIsSuccess(false);
+    try {
+      await forgotPassword(data);
+      setIsSuccess(true);
+      reset();
+      // Optionally redirect after a delay
+      setTimeout(() => {
+        router.push("/sign-in");
+      }, 3000);
+    } catch (error) {
+      console.error("Forgot password error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return {
+    register,
+    handleSubmit: handleSubmit(onSubmit),
+    errors,
+    isLoading,
+    isSuccess,
+  };
+};
+

@@ -53,7 +53,7 @@ export default function SignUpPage() {
 
             <Input
               id="phone"
-              type="tel"
+              type="phone"
               label="Phone Number"
               placeholder="+1 (555) 000-0000"
               error={errors.phone?.message}
@@ -124,21 +124,6 @@ export default function SignUpPage() {
               </Link>
             </div>
           </form>
-
-          {/* Divider */}
-          <div className="flex items-center gap-4 my-6">
-            <div className="flex-1 h-px bg-border" />
-            <span className="text-sm text-text-secondary">
-              or sign up with
-            </span>
-            <div className="flex-1 h-px bg-border" />
-          </div>
-
-          {/* Social Sign Up */}
-          <div className="grid grid-cols-2 gap-3">
-            <Button variant="outline">Google</Button>
-            <Button variant="outline">Facebook</Button>
-          </div>
         </div>
       </div>
 
@@ -176,16 +161,6 @@ export default function SignUpPage() {
                 </div>
               </div>
             ))}
-          </div>
-
-          {/* Testimonial */}
-          <div className="mt-10 p-6 bg-white/10 rounded-xl max-w-[400px] backdrop-blur-sm">
-            <p className="text-base text-white mb-3 italic">
-              &ldquo;Clothera transformed the way I shop for fashion. The personalized recommendations are spot on!&rdquo;
-            </p>
-            <div className="text-sm text-white font-medium">
-              — Sarah M., Fashion Enthusiast
-            </div>
           </div>
         </div>
       </div>
