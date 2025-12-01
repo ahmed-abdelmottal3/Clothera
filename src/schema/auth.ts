@@ -23,3 +23,9 @@ export const forgotPasswordSchema = z.object({
 })
 
 export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
+
+export const verifyResetCodeSchema = z.object({
+    resetCode: z.string().min(6, "Code must be at least 6 characters long"),
+})
+
+export type VerifyResetCodeSchema = z.infer<typeof verifyResetCodeSchema>;
