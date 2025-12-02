@@ -22,7 +22,7 @@ export function SidebarFilter({
   priceRange
 }: SidebarFilterProps) {
   return (
-    <div className="w-full lg:w-64 flex-shrink-0 space-y-8">
+    <div className="w-full lg:w-64 flex-shrink-0 space-y-8 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pr-2 custom-scrollbar">
       {/* Search */}
       <div className="relative">
         <input
@@ -38,26 +38,32 @@ export function SidebarFilter({
       <div>
         <h3 className="font-semibold text-text-primary mb-4">Categories</h3>
         <div className="space-y-2">
-          <label className="flex items-center gap-2 cursor-pointer group">
+          <label className="flex items-center gap-3 cursor-pointer group">
             <input
               type="radio"
               name="category"
-              className="w-4 h-4 text-primary border-gray-300 focus:ring-primary"
+              className="sr-only peer"
               checked={selectedCategory === ''}
               onChange={() => onFilterChange('category', '')}
             />
-            <span className="text-sm text-text-secondary group-hover:text-primary transition-colors">All Categories</span>
+            <span className="w-5 h-5 rounded-full border-2 border-text-secondary/30 flex items-center justify-center peer-checked:border-primary peer-checked:bg-primary transition-all group-hover:border-primary/50">
+              <span className="w-2 h-2 rounded-full bg-white opacity-0 peer-checked:opacity-100 transition-opacity"></span>
+            </span>
+            <span className="text-sm text-text-secondary group-hover:text-primary peer-checked:text-primary peer-checked:font-medium transition-colors">All Categories</span>
           </label>
           {categories.map((cat) => (
-            <label key={cat} className="flex items-center gap-2 cursor-pointer group">
+            <label key={cat} className="flex items-center gap-3 cursor-pointer group">
               <input
                 type="radio"
                 name="category"
-                className="w-4 h-4 text-primary border-gray-300 focus:ring-primary"
+                className="sr-only peer"
                 checked={selectedCategory === cat}
                 onChange={() => onFilterChange('category', cat)}
               />
-              <span className="text-sm text-text-secondary group-hover:text-primary transition-colors">{cat}</span>
+              <span className="w-5 h-5 rounded-full border-2 border-text-secondary/30 flex items-center justify-center peer-checked:border-primary peer-checked:bg-primary transition-all group-hover:border-primary/50">
+                <span className="w-2 h-2 rounded-full bg-white opacity-0 peer-checked:opacity-100 transition-opacity"></span>
+              </span>
+              <span className="text-sm text-text-secondary group-hover:text-primary peer-checked:text-primary peer-checked:font-medium transition-colors">{cat}</span>
             </label>
           ))}
         </div>
@@ -67,26 +73,32 @@ export function SidebarFilter({
       <div>
         <h3 className="font-semibold text-text-primary mb-4">Brands</h3>
         <div className="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-          <label className="flex items-center gap-2 cursor-pointer group">
+          <label className="flex items-center gap-3 cursor-pointer group">
             <input
               type="radio"
               name="brand"
-              className="w-4 h-4 text-primary border-gray-300 focus:ring-primary"
+              className="sr-only peer"
               checked={selectedBrand === ''}
               onChange={() => onFilterChange('brand', '')}
             />
-            <span className="text-sm text-text-secondary group-hover:text-primary transition-colors">All Brands</span>
+            <span className="w-5 h-5 rounded-full border-2 border-text-secondary/30 flex items-center justify-center peer-checked:border-primary peer-checked:bg-primary transition-all group-hover:border-primary/50">
+              <span className="w-2 h-2 rounded-full bg-white opacity-0 peer-checked:opacity-100 transition-opacity"></span>
+            </span>
+            <span className="text-sm text-text-secondary group-hover:text-primary peer-checked:text-primary peer-checked:font-medium transition-colors">All Brands</span>
           </label>
           {brands.map((brand) => (
-            <label key={brand} className="flex items-center gap-2 cursor-pointer group">
+            <label key={brand} className="flex items-center gap-3 cursor-pointer group">
               <input
                 type="radio"
                 name="brand"
-                className="w-4 h-4 text-primary border-gray-300 focus:ring-primary"
+                className="sr-only peer"
                 checked={selectedBrand === brand}
                 onChange={() => onFilterChange('brand', brand)}
               />
-              <span className="text-sm text-text-secondary group-hover:text-primary transition-colors">{brand}</span>
+              <span className="w-5 h-5 rounded-full border-2 border-text-secondary/30 flex items-center justify-center peer-checked:border-primary peer-checked:bg-primary transition-all group-hover:border-primary/50">
+                <span className="w-2 h-2 rounded-full bg-white opacity-0 peer-checked:opacity-100 transition-opacity"></span>
+              </span>
+              <span className="text-sm text-text-secondary group-hover:text-primary peer-checked:text-primary peer-checked:font-medium transition-colors">{brand}</span>
             </label>
           ))}
         </div>
@@ -103,8 +115,8 @@ export function SidebarFilter({
           <input
             type="range"
             min="0"
-            max="10000"
-            step="100"
+            max="600"
+            step="10"
             value={priceRange[1]}
             onChange={(e) => onFilterChange('priceRange', [0, parseInt(e.target.value)])}
             className="w-full accent-primary h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"

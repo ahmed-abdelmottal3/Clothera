@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ShoppingCart, User, Menu, X, Search, LogOut, LogIn } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useAuth, useLogout } from '@/hooks/auth';
@@ -17,6 +18,7 @@ export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isAuthenticated, checkAuth } = useAuth();
   const { logout, isLoading: isLoggingOut } = useLogout();
+  const pathname = usePathname();
 
   // Check auth status on mount
   useEffect(() => {
@@ -46,15 +48,22 @@ export function Navbar() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.href}
-              href={link.href} 
-              className="text-text-secondary hover:text-primary transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link 
+                key={link.href}
+                href={link.href} 
+                className={`transition-colors font-medium ${
+                  isActive 
+                    ? 'text-primary border-b-2 border-primary' 
+                    : 'text-text-secondary hover:text-primary'
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Actions */}
@@ -113,16 +122,23 @@ export function Navbar() {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden border-t border-border bg-surface p-4 space-y-4">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.href}
-              href={link.href} 
-              className="block text-text-secondary hover:text-primary"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link 
+                key={link.href}
+                href={link.href} 
+                className={`block transition-colors font-medium ${
+                  isActive 
+                    ? 'text-primary' 
+                    : 'text-text-secondary hover:text-primary'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
           
           {/* Mobile Auth Actions */}
           <div className="pt-4 border-t border-border space-y-2">
