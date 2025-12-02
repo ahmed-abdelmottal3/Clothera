@@ -71,9 +71,9 @@ export default function ProductDetailsPage() {
     : 0;
 
   return (
-    <main className="min-h-screen bg-[#FAFAFA] pb-20">
+    <main className="min-h-screen bg-background pb-20">
       {/* Breadcrumbs */}
-      <div className="bg-white border-b border-border">
+      <div className="bg-surface border-b border-border">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-2 text-sm text-text-secondary">
             <Link href="/" className="hover:text-primary transition-colors">Home</Link>
@@ -89,7 +89,7 @@ export default function ProductDetailsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-16">
           {/* Left Column: Gallery */}
           <div className="space-y-6">
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-white shadow-sm group">
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-surface shadow-sm group">
               <Image
                 src={selectedImage || product.imageCover}
                 alt={product.title}
@@ -193,7 +193,7 @@ export default function ProductDetailsPage() {
             {/* Actions */}
             <div className="space-y-6">
               <div className="flex items-center gap-6">
-                <div className="flex items-center border border-border rounded-full bg-white shadow-sm">
+                <div className="flex items-center border border-border rounded-full bg-surface shadow-sm">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     className="w-12 h-12 flex items-center justify-center text-text-secondary hover:text-primary transition-colors"
@@ -222,17 +222,17 @@ export default function ProductDetailsPage() {
 
               <div className="flex gap-4">
                 <Button 
-                  className="flex-1 h-14 text-lg rounded-full shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all hover:-translate-y-1"
-                  variant="primary"
+                  className="flex-1 h-14 text-lg rounded-full shadow-xl shadow-secondary/20 hover:shadow-secondary/30 transition-all hover:-translate-y-1"
+                  variant="secondary"
                   disabled={product.quantity === 0}
                 >
                   <ShoppingCart className="w-5 h-5 mr-2" />
                   Add to Cart
                 </Button>
-                <button className="h-14 w-14 flex items-center justify-center rounded-full border border-border bg-white text-text-secondary hover:text-red-500 hover:border-red-200 hover:bg-red-50 transition-all shadow-sm">
+                <button className="h-14 w-14 flex items-center justify-center rounded-full border border-border bg-surface text-text-secondary hover:text-red-500 hover:border-red-200 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all shadow-sm">
                   <Heart className="w-6 h-6" />
                 </button>
-                <button className="h-14 w-14 flex items-center justify-center rounded-full border border-border bg-white text-text-secondary hover:text-primary hover:border-primary/20 hover:bg-primary/5 transition-all shadow-sm">
+                <button className="h-14 w-14 flex items-center justify-center rounded-full border border-border bg-surface text-text-secondary hover:text-primary hover:border-primary/20 hover:bg-primary/5 transition-all shadow-sm">
                   <Share2 className="w-6 h-6" />
                 </button>
               </div>
@@ -240,7 +240,7 @@ export default function ProductDetailsPage() {
 
             {/* Features */}
             <div className="grid grid-cols-2 gap-4 pt-6">
-              <div className="flex items-center gap-3 p-4 rounded-xl bg-white border border-border/50 shadow-sm">
+              <div className="flex items-center gap-3 p-4 rounded-xl bg-surface border border-border/50 shadow-sm">
                 <div className="p-2 rounded-full bg-blue-50 text-blue-600">
                   <Truck className="w-5 h-5" />
                 </div>
@@ -249,7 +249,7 @@ export default function ProductDetailsPage() {
                   <p className="text-xs text-text-secondary">Orders over $200</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 p-4 rounded-xl bg-white border border-border/50 shadow-sm">
+              <div className="flex items-center gap-3 p-4 rounded-xl bg-surface border border-border/50 shadow-sm">
                 <div className="p-2 rounded-full bg-purple-50 text-purple-600">
                   <RotateCcw className="w-5 h-5" />
                 </div>
@@ -299,7 +299,7 @@ export default function ProductDetailsPage() {
                 <p>{product.description}</p>
                 {/* Add more detailed description content here if available */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-                  <div className="bg-white p-6 rounded-2xl border border-border">
+                  <div className="bg-surface p-6 rounded-2xl border border-border">
                     <h3 className="text-xl font-bold text-text-primary mb-4">Material & Care</h3>
                     <ul className="space-y-2 list-disc list-inside">
                       <li>100% Cotton</li>
@@ -308,7 +308,7 @@ export default function ProductDetailsPage() {
                       <li>Tumble dry low</li>
                     </ul>
                   </div>
-                  <div className="bg-white p-6 rounded-2xl border border-border">
+                  <div className="bg-surface p-6 rounded-2xl border border-border">
                     <h3 className="text-xl font-bold text-text-primary mb-4">Specifications</h3>
                     <ul className="space-y-2 list-disc list-inside">
                       <li>Regular fit</li>
@@ -321,7 +321,7 @@ export default function ProductDetailsPage() {
               </div>
             ) : (
               <div className="space-y-8">
-                <div className="flex flex-col md:flex-row gap-8 items-center justify-between bg-white p-8 rounded-2xl border border-border shadow-sm">
+                <div className="flex flex-col md:flex-row gap-8 items-center justify-between bg-surface p-8 rounded-2xl border border-border shadow-sm">
                   <div className="text-center md:text-left">
                     <div className="text-5xl font-black text-text-primary mb-2">
                       {product.ratingsAverage}

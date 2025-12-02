@@ -16,7 +16,7 @@ export function NewsletterSection() {
   return (
     <section className="w-full py-12 md:py-16 bg-background">
       <div className="container mx-auto px-4">
-        <div className="bg-black rounded-3xl px-6 py-10 md:px-12 md:py-16">
+        <div className="bg-primary rounded-3xl px-6 py-10 md:px-12 md:py-16">
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div>
@@ -34,13 +34,13 @@ export function NewsletterSection() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter your email address"
-                      className="w-full pl-12 pr-4 py-4 rounded-full bg-white text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-white/50"
+                      className="w-full pl-12 pr-4 py-4 rounded-full bg-surface text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-primary/50 border border-border"
                       required
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full py-4 rounded-full bg-white text-black font-bold hover:bg-gray-100 transition-colors"
+                    className="w-full py-4 rounded-full bg-surface text-text-primary font-bold hover:bg-surface/80 transition-colors border border-border"
                   >
                     Subscribe to Newsletter
                   </button>

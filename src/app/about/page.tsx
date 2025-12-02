@@ -13,7 +13,7 @@ import { SVGProps } from "react";
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-[var(--color-background)] text-[var(--color-text-primary)]">
+    <main className="min-h-screen bg-background text-primary">
       {/* Hero Section */}
       <section className="relative h-[60vh] md:h-[80vh] w-full overflow-hidden">
         <Image
@@ -73,7 +73,7 @@ export default function AboutPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Mission Card */}
-            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow border border-[var(--color-border-light)]">
+            <div className="bg-surface p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow border border-[var(--color-border-light)]">
               <div className="w-14 h-14 bg-[var(--color-accent-light)] rounded-full flex items-center justify-center mb-6 text-[var(--color-secondary-dark)]">
                 <TargetIcon className="w-8 h-8" />
               </div>
@@ -84,7 +84,7 @@ export default function AboutPage() {
             </div>
 
             {/* Vision Card */}
-            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow border border-[var(--color-border-light)]">
+            <div className="bg-surface p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow border border-[var(--color-border-light)]">
               <div className="w-14 h-14 bg-[var(--color-accent-light)] rounded-full flex items-center justify-center mb-6 text-[var(--color-secondary-dark)]">
                 <Globe className="w-8 h-8" />
               </div>
@@ -95,7 +95,7 @@ export default function AboutPage() {
             </div>
 
             {/* Values Card */}
-            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow border border-[var(--color-border-light)]">
+            <div className="bg-surface p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow border border-[var(--color-border-light)]">
               <div className="w-14 h-14 bg-[var(--color-accent-light)] rounded-full flex items-center justify-center mb-6 text-[var(--color-secondary-dark)]">
                 <Heart className="w-8 h-8" />
               </div>
@@ -155,11 +155,11 @@ export default function AboutPage() {
                 Clothera is more than just a brand; it&apos;s a community of creators, dreamers, and doers. Our team is dedicated to pushing the boundaries of what&apos;s possible in fashion.
               </p>
               <div className="flex flex-wrap gap-4">
-                <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
+                <div className="flex items-center gap-2 bg-surface/10 px-4 py-2 rounded-full backdrop-blur-sm border border-border/20">
                   <Users className="w-5 h-5 text-[var(--color-secondary)]" />
                   <span>10k+ Community</span>
                 </div>
-                <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
+                <div className="flex items-center gap-2 bg-surface/10 px-4 py-2 rounded-full backdrop-blur-sm border border-border/20">
                   <Sparkles className="w-5 h-5 text-[var(--color-secondary)]" />
                   <span>500+ Designs</span>
                 </div>

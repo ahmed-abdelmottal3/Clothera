@@ -13,7 +13,7 @@ export function ProductCard({ product }: ProductCardProps) {
     <Link href={`/products/${product.id}`} className="block h-full">
       <div className="group bg-surface rounded-2xl overflow-hidden border border-border hover:shadow-xl transition-all duration-300 flex flex-col h-full cursor-pointer">
         {/* Image Container */}
-        <div className="relative aspect-[4/5] overflow-hidden bg-gray-100">
+        <div className="relative aspect-[4/5] overflow-hidden bg-surface">
           <Image
             src={product.imageCover}
             alt={product.title}
@@ -36,7 +36,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 e.preventDefault();
                 e.stopPropagation();
               }}
-              className="p-2 bg-white rounded-full shadow-md hover:bg-primary hover:text-white transition-colors"
+              className="p-2 bg-surface rounded-full shadow-md hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20 transition-colors border border-border"
             >
               <Heart className="h-5 w-5" />
             </button>
@@ -79,6 +79,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
             <Button 
               size="sm" 
+              variant="secondary"
               className="rounded-full w-10 h-10 p-0 flex items-center justify-center"
               onClick={(e) => {
                 e.preventDefault();

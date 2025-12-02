@@ -3,8 +3,9 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ShoppingCart, User, Menu, X, Search, LogOut, LogIn } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAuth, useLogout } from '@/hooks/auth';
+import { ThemeToggle } from './ThemeToggle';
 
 
 const navLinks = [
@@ -16,9 +17,11 @@ const navLinks = [
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { isAuthenticated, checkAuth } = useAuth();
   const { logout, isLoading: isLoggingOut } = useLogout();
   const pathname = usePathname();
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Check auth status on mount
   useEffect(() => {
@@ -33,9 +36,20 @@ export function Navbar() {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, [checkAuth]);
 
+  // Focus search input when opened
+  useEffect(() => {
+    if (isSearchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isSearchOpen]);
+
   const handleLogout = () => {
     logout();
     setIsMenuOpen(false);
+  };
+
+  const toggleSearch = () => {
+    setIsSearchOpen(!isSearchOpen);
   };
 
   return (
@@ -67,15 +81,37 @@ export function Navbar() {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center relative">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="pl-8 pr-4 py-1.5 rounded-full border border-input bg-surface text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
-            />
-            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-text-secondary" />
+        <div className="flex items-center gap-2">
+          {/* Expandable Search - Desktop */}
+          <div className="hidden md:flex items-center">
+            <div className={`flex items-center transition-all duration-300 ${
+              isSearchOpen ? 'w-64' : 'w-10'
+            }`}>
+              {isSearchOpen ? (
+                <div className="flex items-center relative w-full">
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Search..."
+                    className="w-full pl-8 pr-4 py-1.5 rounded-full border border-input bg-surface text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    onBlur={() => setIsSearchOpen(false)}
+                  />
+                  <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-text-secondary" />
+                </div>
+              ) : (
+                <button
+                  onClick={toggleSearch}
+                  className="p-2 hover:bg-surface rounded-full transition-colors"
+                  title="Search"
+                >
+                  <Search className="h-5 w-5 text-text-primary" />
+                </button>
+              )}
+            </div>
           </div>
+
+          {/* Theme Toggle */}
+          <ThemeToggle />
           
           <Link href="/cart" className="relative p-2 hover:bg-surface rounded-full transition-colors">
             <ShoppingCart className="h-5 w-5 text-text-primary" />
@@ -122,6 +158,16 @@ export function Navbar() {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden border-t border-border bg-surface p-4 space-y-4">
+          {/* Mobile Search */}
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search..."
+              className="w-full pl-8 pr-4 py-2 rounded-full border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-text-secondary" />
+          </div>
+
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (

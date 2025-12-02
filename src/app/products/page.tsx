@@ -85,7 +85,7 @@ export default function ProductsPage() {
   return (
     <main className="min-h-screen bg-background pb-20">
       {/* Page Header */}
-      <div className="bg-[#F2F0F1] py-12 md:py-16">
+      <div className="bg-surface py-12 md:py-16">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary text-center">
             ALL PRODUCTS

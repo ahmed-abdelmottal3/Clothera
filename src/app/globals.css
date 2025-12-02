@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme inline {
+:root {
   /* Primary Colors - Sophisticated Navy */
   --color-primary: #1a1f3a;
   --color-primary-light: #2d3454;
@@ -41,6 +41,9 @@
   --color-border-light: #f0eee9;
   --color-border-dark: #d1cfc9;
 
+  /* Input Colors */
+  --color-input: #e5e3df;
+
   /* Fonts */
   --font-sans: var(
     --font-geist-sans,
@@ -53,6 +56,49 @@
     sans-serif
   );
   --font-mono: var(--font-geist-mono, "Courier New", monospace);
+}
+
+/* Dark Mode Theme */
+.dark {
+  --color-primary: #4a7c9e;
+  --color-primary-light: #6b9ec2;
+  --color-primary-dark: #2d5a7a;
+
+  --color-secondary: #d49a7f;
+  --color-secondary-light: #e8c0af;
+  --color-secondary-dark: #c17a5c;
+
+  --color-accent: #3d3027;
+  --color-accent-light: #4d4037;
+  --color-accent-dark: #2d2017;
+
+  /* Dark Background Colors */
+  --color-background: #0f1117;
+  --color-background-white: #1a1d29;
+  --color-background-light: #14161f;
+  --color-surface: #1a1d29;
+
+  /* Dark Text Colors */
+  --color-text-primary: #e5e7eb;
+  --color-text-secondary: #9ca3af;
+  --color-text-light: #6b7280;
+  --color-text-inverse: #1a1d29;
+
+  /* Semantic Colors - adjusted for dark mode */
+  --color-success: #10b981;
+  --color-success-light: #34d399;
+  --color-error: #ef4444;
+  --color-error-light: #f87171;
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
+
+  /* Dark Border Colors */
+  --color-border: #2d3748;
+  --color-border-light: #374151;
+  --color-border-dark: #1f2937;
+
+  /* Input Colors */
+  --color-input: #2d3748;
 }
 
 /* Base Styles */

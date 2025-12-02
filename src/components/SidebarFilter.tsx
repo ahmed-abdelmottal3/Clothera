@@ -47,7 +47,7 @@ export function SidebarFilter({
               onChange={() => onFilterChange('category', '')}
             />
             <span className="w-5 h-5 rounded-full border-2 border-text-secondary/30 flex items-center justify-center peer-checked:border-primary peer-checked:bg-primary transition-all group-hover:border-primary/50">
-              <span className="w-2 h-2 rounded-full bg-white opacity-0 peer-checked:opacity-100 transition-opacity"></span>
+              <span className="w-2 h-2 rounded-full bg-text-inverse opacity-0 peer-checked:opacity-100 transition-opacity"></span>
             </span>
             <span className="text-sm text-text-secondary group-hover:text-primary peer-checked:text-primary peer-checked:font-medium transition-colors">All Categories</span>
           </label>
@@ -119,7 +119,7 @@ export function SidebarFilter({
             step="10"
             value={priceRange[1]}
             onChange={(e) => onFilterChange('priceRange', [0, parseInt(e.target.value)])}
-            className="w-full accent-primary h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+            className="w-full accent-secondary h-2 bg-input rounded-lg appearance-none cursor-pointer"
           />
         </div>
       </div>

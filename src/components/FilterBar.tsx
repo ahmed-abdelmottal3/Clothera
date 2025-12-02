@@ -123,7 +123,7 @@ export function FilterBar({ onSearch, onFilterChange, categories, brands }: Filt
                   step="100"
                   value={priceRange[1]}
                   onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
-                  className="w-full accent-primary h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                  className="w-full accent-primary h-2 bg-input rounded-lg appearance-none cursor-pointer"
                 />
               </div>
             </div>

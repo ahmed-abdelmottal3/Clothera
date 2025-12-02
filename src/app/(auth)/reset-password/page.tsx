@@ -84,7 +84,7 @@ export default function ResetPasswordPage() {
 
         {/* Content */}
         <div className="z-10 text-center animate-slide-right">
-          <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">
+          <div className="w-20 h-20 bg-surface rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">
             <Image src="/assets/logo.png" alt="Logo" width={200} height={200} />
           </div>
           <h2 className="text-3xl font-bold text-white mb-4">

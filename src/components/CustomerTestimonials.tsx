@@ -57,7 +57,7 @@ export function CustomerTestimonials() {
               disabled={currentIndex === 0}
               className={`p-2 rounded-full border transition-colors ${
                 currentIndex === 0
-                  ? 'border-gray-300 text-gray-300 cursor-not-allowed'
+                  ? 'border-border text-text-light cursor-not-allowed'
                   : 'border-text-primary text-text-primary hover:bg-text-primary hover:text-white'
               }`}
             >
@@ -68,7 +68,7 @@ export function CustomerTestimonials() {
               disabled={currentIndex >= maxIndex}
               className={`p-2 rounded-full border transition-colors ${
                 currentIndex >= maxIndex
-                  ? 'border-gray-300 text-gray-300 cursor-not-allowed'
+                  ? 'border-border text-text-light cursor-not-allowed'
                   : 'border-text-primary text-text-primary hover:bg-text-primary hover:text-white'
               }`}
             >
@@ -86,7 +86,7 @@ export function CustomerTestimonials() {
             {testimonials.map((testimonial) => (
               <div
                 key={testimonial.id}
-                className="flex-shrink-0 w-[calc(33.333%-1rem)] bg-white border border-border rounded-2xl p-6"
+                className="flex-shrink-0 w-[calc(33.333%-1rem)] bg-surface border border-border rounded-2xl p-6"
               >
                 <div className="flex gap-1 mb-4">
                   {Array.from({ length: testimonial.rating }).map((_, i) => (
@@ -112,7 +112,7 @@ export function CustomerTestimonials() {
           {testimonials.map((testimonial) => (
             <div
               key={testimonial.id}
-              className="bg-white border border-border rounded-2xl p-6"
+              className="bg-surface border border-border rounded-2xl p-6"
             >
               <div className="flex gap-1 mb-4">
                 {Array.from({ length: testimonial.rating }).map((_, i) => (

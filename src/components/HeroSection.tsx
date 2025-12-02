@@ -64,7 +64,7 @@ export function HeroSection() {
   };
 
   return (
-    <div className="relative w-full bg-[#F2F0F1] overflow-hidden">
+    <div className="relative w-full">
       <div className="container mx-auto px-4 py-12 md:py-16 lg:py-20">
         <div className="grid lg:grid-cols-2 gap-8 items-center">
           {/* Left Content */}
@@ -84,7 +84,7 @@ export function HeroSection() {
             <Button 
               variant="primary"
               size="lg"
-              className="w-full sm:w-auto px-12 py-6 text-base font-medium rounded-full bg-black hover:bg-black/90 text-white"
+              className="w-full sm:w-auto px-12 py-6 text-base font-medium rounded-full"
             >
               Shop Now
             </Button>
@@ -109,10 +109,10 @@ export function HeroSection() {
           {/* Right Image Carousel */}
           <div className="relative lg:h-[750px] xl:h-[850px] h-[550px]">
             <div className="absolute top-8 right-12 z-10 animate-bounce pointer-events-none">
-              <Sparkles className="w-12 h-12 text-black fill-black" />
+              <Sparkles className="w-12 h-12 text-text-primary fill-text-primary" />
             </div>
             <div className="absolute top-32 right-4 z-10 animate-pulse pointer-events-none">
-              <Sparkles className="w-8 h-8 text-black fill-black" />
+              <Sparkles className="w-8 h-8 text-text-primary fill-text-primary" />
             </div>
             
             {/* Carousel Images */}
@@ -149,17 +149,17 @@ export function HeroSection() {
             {/* Navigation Buttons */}
             <button
               onClick={prevSlide}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-white p-2 rounded-full shadow-lg transition-all hover:scale-110"
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-surface/90 hover:bg-surface p-2 rounded-full shadow-lg transition-all hover:scale-110 border border-border"
               aria-label="Previous slide"
             >
-              <ChevronLeft className="w-6 h-6 text-black" />
+              <ChevronLeft className="w-6 h-6 text-text-primary" />
             </button>
             <button
               onClick={nextSlide}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-white p-2 rounded-full shadow-lg transition-all hover:scale-110"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-surface/90 hover:bg-surface p-2 rounded-full shadow-lg transition-all hover:scale-110 border border-border"
               aria-label="Next slide"
             >
-              <ChevronRight className="w-6 h-6 text-black" />
+              <ChevronRight className="w-6 h-6 text-text-primary" />
             </button>
 
             {/* Slide Indicators */}
@@ -168,10 +168,10 @@ export function HeroSection() {
                 <button
                   key={index}
                   onClick={() => setCurrentSlide(index)}
-                  className={`w-2 h-2 rounded-full transition-all ${
+                  className={`w-2 h-2 rounded-full transition-all border ${
                     index === currentSlide 
-                      ? 'bg-black w-8' 
-                      : 'bg-white/60 hover:bg-white/80'
+                      ? 'bg-primary w-8 border-primary' 
+                      : 'bg-surface/60 hover:bg-surface/80 border-border'
                   }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />

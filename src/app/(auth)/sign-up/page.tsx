@@ -135,7 +135,7 @@ export default function SignUpPage() {
 
         {/* Content */}
         <div className="z-10 text-center animate-slide-left">
-          <div className="w-20 h-20 bg-white rounded-xl flex items-center justify-center mx-auto mb-6 text-4xl">
+          <div className="w-20 h-20 bg-surface rounded-xl flex items-center justify-center mx-auto mb-6 text-4xl">
             🎨
           </div>
           <h2 className="text-3xl font-bold text-white mb-4">
