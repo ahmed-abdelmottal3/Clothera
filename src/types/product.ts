@@ -51,3 +51,7 @@ export interface ProductResponse {
   };
   data: Product[];
 }
+
+export interface SingleProductResponse {
+  data: Product;
+}
