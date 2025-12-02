@@ -1,4 +1,4 @@
-import { SignUpData, SignInData, ForgotPasswordData, verifyResetCodeData } from "@/types/auth";
+import { SignUpData, SignInData, ForgotPasswordData, verifyResetCodeData, resetPasswordData } from "@/types/auth";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import api from "@/lib/axios";
@@ -58,6 +58,22 @@ export async function verifyResetCode(values: verifyResetCodeData) {
   try {
     const response = await api.post("/auth/verifyResetCode", values);
 
+    return response.data;
+  } catch (error: unknown) {
+    const err = error as AxiosError<{ message: string }>;
+    const message =
+      err.response?.data?.message ||
+      err.message ||
+      "Something went wrong";
+    toast.error(message);
+    throw new Error(message);
+  }
+}
+
+export async function resetPassword(values :resetPasswordData) {
+  try{
+    const response = await api.put("/auth/resetPassword", values);
+    toast.success("Password reset successful!");
     return response.data;
   } catch (error: unknown) {
     const err = error as AxiosError<{ message: string }>;

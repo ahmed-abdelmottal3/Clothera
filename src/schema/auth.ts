@@ -29,3 +29,10 @@ export const verifyResetCodeSchema = z.object({
 })
 
 export type VerifyResetCodeSchema = z.infer<typeof verifyResetCodeSchema>;
+
+export const resetPasswordSchema = z.object({
+    email: z.string().email("Invalid email address"),
+    newPassword: z.string().min(6, "Password must be at least 6 characters long"),
+})
+
+export type ResetPasswordSchema = z.infer<typeof resetPasswordSchema>;

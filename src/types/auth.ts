@@ -18,3 +18,8 @@ export interface ForgotPasswordData {
 export interface verifyResetCodeData {
     resetCode: string;
 }
+
+export interface resetPasswordData {
+    email: string;
+    newPassword: string;
+}

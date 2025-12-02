@@ -1,8 +1,8 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpSchema, signInSchema, forgotPasswordSchema, verifyResetCodeSchema, SignUpSchema, SignInSchema, ForgotPasswordSchema, VerifyResetCodeSchema } from "@/schema/auth";
-import { registerUser, signInUser, forgotPassword, verifyResetCode } from "@/services/auth";
+import { signUpSchema, signInSchema, forgotPasswordSchema, verifyResetCodeSchema, SignUpSchema, SignInSchema, ForgotPasswordSchema, VerifyResetCodeSchema, ResetPasswordSchema, resetPasswordSchema } from "@/schema/auth";
+import { registerUser, signInUser, forgotPassword, verifyResetCode, resetPassword } from "@/services/auth";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -138,11 +138,47 @@ export const useVerifyResetCode = () => {
     setIsLoading(true);
     try {
       await verifyResetCode(data);
-      router.push("/sign-in");
-      toast.success("Password reset successful!");
+      router.push("/reset-password");
+      toast.success("Code verified successfully!");
       reset();
     } catch (error) {
       console.error("Verify code error:", error);
+      toast.error("Invalid code");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return {
+    register,
+    handleSubmit: handleSubmit(onSubmit),
+    errors,
+    isLoading,
+  };
+};
+
+export const useResetPassword = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ResetPasswordSchema>({
+    resolver: zodResolver(resetPasswordSchema),
+  });
+
+  const onSubmit = async (data: ResetPasswordSchema) => {
+    setIsLoading(true);
+    try {
+      await resetPassword(data);
+      router.push("/sign-in");
+      toast.success("Password reset successfully!");
+      reset();
+    } catch (error) {
+      console.error("Reset password error:", error);
       toast.error("Invalid code");
     } finally {
       setIsLoading(false);
