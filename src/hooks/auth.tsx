@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema, signInSchema, forgotPasswordSchema, verifyResetCodeSchema, SignUpSchema, SignInSchema, ForgotPasswordSchema, VerifyResetCodeSchema, ResetPasswordSchema, resetPasswordSchema } from "@/schema/auth";
 import { registerUser, signInUser, forgotPassword, verifyResetCode, resetPassword } from "@/services/auth";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -61,8 +61,13 @@ export const useSignIn = () => {
       if (response.token) {
         localStorage.setItem("token", response.token);
       }
-      router.push("/");
+      toast.success("Login successful!");
       reset();
+      
+      // Force page reload to update navbar state
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 100);
     } catch (error) {
       console.error("Sign in error:", error);
     } finally {
@@ -189,6 +194,64 @@ export const useResetPassword = () => {
     register,
     handleSubmit: handleSubmit(onSubmit),
     errors,
+    isLoading,
+  };
+};
+
+// Hook to check if user is authenticated
+export const useAuth = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const checkAuth = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem("token");
+      setIsAuthenticated(!!token);
+      return !!token;
+    }
+    return false;
+  }, []);
+
+  // Check auth on mount
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  return {
+    isAuthenticated,
+    checkAuth,
+  };
+};
+
+// Hook to handle logout
+export const useLogout = () => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const logout = () => {
+    setIsLoading(true);
+    try {
+      // Remove token from localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem("token");
+      }
+      
+      // Show success message
+      toast.success("Logged out successfully!");
+      
+      // Force page reload to clear auth state
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 100);
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Failed to logout");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return {
+    logout,
     isLoading,
   };
 };

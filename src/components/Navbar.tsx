@@ -1,12 +1,33 @@
 'use client';
 
 import Link from 'next/link';
-import { ShoppingCart, User, Menu, X, Search } from 'lucide-react';
-import { useState } from 'react';
+import { ShoppingCart, User, Menu, X, Search, LogOut, LogIn } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useAuth, useLogout } from '@/hooks/auth';
 
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isAuthenticated, checkAuth } = useAuth();
+  const { logout, isLoading: isLoggingOut } = useLogout();
+
+  // Check auth status on mount
+  useEffect(() => {
+    checkAuth();
+    
+    // Listen for storage changes (cross-tab sync)
+    const handleStorageChange = () => {
+      checkAuth();
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, [checkAuth]);
+
+  const handleLogout = () => {
+    logout();
+    setIsMenuOpen(false);
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
@@ -50,9 +71,30 @@ export function Navbar() {
             </span>
           </Link>
           
-          <Link href="/sign-in" className="p-2 hover:bg-surface rounded-full transition-colors">
-            <User className="h-5 w-5 text-text-primary" />
-          </Link>
+          {/* Conditional auth buttons */}
+          {!isAuthenticated ? (
+            <Link href="/sign-in" className="p-2 hover:bg-surface rounded-full transition-colors" title="Sign In">
+              <LogIn className="h-5 w-5 text-text-primary" />
+            </Link>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link 
+                href="/profile" 
+                className="p-2 hover:bg-surface rounded-full transition-colors"
+                title="Profile"
+              >
+                <User className="h-5 w-5 text-text-primary" />
+              </Link>
+              <button 
+                onClick={handleLogout}
+                disabled={isLoggingOut}
+                className="p-2 hover:bg-surface rounded-full transition-colors disabled:opacity-50"
+                title="Logout"
+              >
+                <LogOut className="h-5 w-5 text-text-primary" />
+              </button>
+            </div>
+          )}
 
           {/* Mobile Menu Button */}
           <button 
@@ -71,6 +113,39 @@ export function Navbar() {
           <Link href="/products" className="block text-text-secondary hover:text-primary">Shop</Link>
           <Link href="/categories" className="block text-text-secondary hover:text-primary">Categories</Link>
           <Link href="/about" className="block text-text-secondary hover:text-primary">About</Link>
+          
+          {/* Mobile Auth Actions */}
+          <div className="pt-4 border-t border-border space-y-2">
+            {!isAuthenticated ? (
+              <Link 
+                href="/sign-in" 
+                className="flex items-center gap-2 text-text-secondary hover:text-primary"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <User className="h-5 w-5" />
+                <span>Sign In</span>
+              </Link>
+            ) : (
+              <>
+                <Link 
+                  href="/profile" 
+                  className="flex items-center gap-2 text-text-secondary hover:text-primary"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <User className="h-5 w-5" />
+                  <span>Profile</span>
+                </Link>
+                <button 
+                  onClick={handleLogout}
+                  disabled={isLoggingOut}
+                  className="flex items-center gap-2 text-text-secondary hover:text-primary disabled:opacity-50 w-full text-left"
+                >
+                  <LogOut className="h-5 w-5" />
+                  <span>{isLoggingOut ? 'Logging out...' : 'Logout'}</span>
+                </button>
+              </>
+            )}
+          </div>
         </div>
       )}
     </nav>
