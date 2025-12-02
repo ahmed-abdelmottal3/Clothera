@@ -5,29 +5,29 @@
   --color-primary: #1a1f3a;
   --color-primary-light: #2d3454;
   --color-primary-dark: #0f1323;
-  
+
   /* Secondary Colors - Warm Terracotta */
   --color-secondary: #c17a5c;
   --color-secondary-light: #d49a7f;
   --color-secondary-dark: #a55d41;
-  
+
   /* Accent Colors - Soft Peach */
   --color-accent: #f5d5c8;
   --color-accent-light: #fae6de;
   --color-accent-dark: #e8c0af;
-  
+
   /* Background Colors */
   --color-background: #faf8f6;
   --color-background-white: #ffffff;
   --color-background-light: #fdfcfb;
   --color-surface: #ffffff;
-  
+
   /* Text Colors */
   --color-text-primary: #2d2d2d;
   --color-text-secondary: #6b6b6b;
   --color-text-light: #9a9a9a;
   --color-text-inverse: #ffffff;
-  
+
   /* Semantic Colors */
   --color-success: #7a9b76;
   --color-success-light: #a2c29e;
@@ -35,15 +35,24 @@
   --color-error-light: #e09b9b;
   --color-warning: #d4a574;
   --color-info: #6b8fc7;
-  
+
   /* Border Colors */
   --color-border: #e5e3df;
   --color-border-light: #f0eee9;
   --color-border-dark: #d1cfc9;
-  
+
   /* Fonts */
-  --font-sans: var(--font-geist-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif);
-  --font-mono: var(--font-geist-mono, 'Courier New', monospace);
+  --font-sans: var(
+    --font-geist-sans,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Roboto",
+    "Oxygen",
+    "Ubuntu",
+    sans-serif
+  );
+  --font-mono: var(--font-geist-mono, "Courier New", monospace);
 }
 
 /* Base Styles */
@@ -97,4 +106,19 @@ body {
 
 .animate-slide-right {
   animation: slideInFromRight 600ms ease-out;
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slideInFromBottom 600ms ease-out;
 }
