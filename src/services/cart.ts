@@ -42,7 +42,6 @@ export async function updateCartItem(itemId: string, count: number): Promise<Car
   try {
     const payload: UpdateCartItemRequest = { count };
     const response = await api.put(`/cart/${itemId}`, payload);
-    toast.success("Cart updated!");
     return response.data;
   } catch (error: unknown) {
     const err = error as AxiosError<{ message: string }>;

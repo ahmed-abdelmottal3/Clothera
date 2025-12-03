@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { CartProvider } from "@/context/CartContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,10 +33,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <Toaster />
-          <Navbar />
-          {children}
-          <Footer />
+          <CartProvider>
+            <Toaster />
+            <Navbar />
+            {children}
+            <Footer />
+          </CartProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -7,8 +7,8 @@ import { useState } from "react";
 
 interface CartItemProps {
   item: CartItemType;
-  onUpdateQuantity: (itemId: string, count: number) => Promise<void>;
-  onRemove: (itemId: string) => Promise<void>;
+  onUpdateQuantity: (itemId: string, count: number) => Promise<unknown>;
+  onRemove: (itemId: string) => Promise<unknown>;
 }
 
 export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
@@ -18,7 +18,8 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
   const handleIncrement = async () => {
     setIsUpdating(true);
     try {
-      await onUpdateQuantity(item._id, item.count + 1);
+      // Use product._id instead of item._id
+      await onUpdateQuantity(item.product._id, item.count + 1);
     } finally {
       setIsUpdating(false);
     }
@@ -28,7 +29,8 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
     if (item.count <= 1) return;
     setIsUpdating(true);
     try {
-      await onUpdateQuantity(item._id, item.count - 1);
+      // Use product._id instead of item._id
+      await onUpdateQuantity(item.product._id, item.count - 1);
     } finally {
       setIsUpdating(false);
     }
@@ -37,7 +39,8 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
   const handleRemove = async () => {
     setIsRemoving(true);
     try {
-      await onRemove(item._id);
+      // Use product._id instead of item._id
+      await onRemove(item.product._id);
     } finally {
       setIsRemoving(false);
     }
@@ -70,7 +73,7 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
                 {item.product.title}
               </h3>
               <p className="text-sm text-text-secondary mb-2">
-                {item.product.category.name}
+                {item.product.category?.name}
               </p>
               <p className="text-lg md:text-xl font-bold text-primary">
                 ${item.price.toFixed(2)}

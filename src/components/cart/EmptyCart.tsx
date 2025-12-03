@@ -21,7 +21,7 @@ export function EmptyCart() {
       </h2>
       
       <p className="text-lg text-text-secondary mb-8 text-center max-w-md">
-        Looks like you haven't added anything to your cart yet. Start shopping to fill it up!
+        Looks like you haven&apos;t added anything to your cart yet. Start shopping to fill it up!
       </p>
 
       <Link
@@ -32,21 +32,6 @@ export function EmptyCart() {
         <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
       </Link>
 
-      {/* Decorative Elements */}
-      <div className="mt-12 grid grid-cols-3 gap-6 max-w-2xl">
-        <div className="text-center">
-          <div className="text-4xl mb-2">🚚</div>
-          <p className="text-sm text-text-secondary">Free Shipping</p>
-        </div>
-        <div className="text-center">
-          <div className="text-4xl mb-2">✨</div>
-          <p className="text-sm text-text-secondary">Quality Products</p>
-        </div>
-        <div className="text-center">
-          <div className="text-4xl mb-2">💯</div>
-          <p className="text-sm text-text-secondary">Best Prices</p>
-        </div>
-      </div>
     </div>
   );
 }

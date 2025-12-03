@@ -15,14 +15,12 @@ export default function CartPage() {
   const { isAuthenticated, isLoading: authLoading } = useAuth();
   const { cart, isLoading, cartCount, updateItem, removeItem, clearAllItems } = useCart();
 
-  // Redirect to sign-in if not authenticated (only after auth check is complete)
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
       router.push("/sign-in");
     }
   }, [isAuthenticated, authLoading, router]);
 
-  // Show loading while checking authentication
   if (authLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -46,7 +44,6 @@ export default function CartPage() {
   };
 
   const handleCheckout = () => {
-    // TODO: Implement checkout functionality
     alert("Checkout functionality coming soon!");
   };
 

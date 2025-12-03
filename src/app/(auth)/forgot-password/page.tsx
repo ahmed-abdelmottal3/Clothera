@@ -54,7 +54,6 @@ export default function ForgotPasswordPage() {
 
                 <Button
                   type="submit"
-                  variant="primary"
                   isLoading={isLoading}
                   className="mb-4"
                 >
