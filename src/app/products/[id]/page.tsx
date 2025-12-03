@@ -6,6 +6,9 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { getProductById } from '@/services/product';
 import { Product } from '@/types/product';
+import { useCartContext } from '@/context/CartContext';
+import { useWishlist } from '@/context/WishlistContext';
+import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/Button';
 import { 
   Star, 
@@ -26,6 +29,34 @@ export default function ProductDetailsPage() {
   const [selectedImage, setSelectedImage] = useState<string>('');
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<'description' | 'reviews'>('description');
+  
+  const { addItem } = useCartContext();
+  const { isInWishlist, addItemToWishlist, removeItemFromWishlist } = useWishlist();
+
+  const handleAddToCart = async () => {
+    if (!product) return;
+    try {
+      await addItem(product.id || product._id);
+      toast.success('Added to cart successfully');
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      toast.error('Failed to add to cart');
+    }
+  };
+
+  const handleToggleWishlist = async () => {
+    if (!product) return;
+    const productId = product.id || product._id;
+    try {
+      if (isInWishlist(productId)) {
+        await removeItemFromWishlist(productId);
+      } else {
+        await addItemToWishlist(productId);
+      }
+    } catch (error) {
+      console.error('Error toggling wishlist:', error);
+    }
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -225,12 +256,20 @@ export default function ProductDetailsPage() {
                   className="flex-1 h-14 text-lg rounded-full shadow-xl shadow-secondary/20 hover:shadow-secondary/30 transition-all hover:-translate-y-1"
                   variant="secondary"
                   disabled={product.quantity === 0}
+                  onClick={handleAddToCart}
                 >
                   <ShoppingCart className="w-5 h-5 mr-2" />
                   Add to Cart
                 </Button>
-                <button className="h-14 w-14 flex items-center justify-center rounded-full border border-border bg-surface text-text-secondary hover:text-red-500 hover:border-red-200 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all shadow-sm">
-                  <Heart className="w-6 h-6" />
+                <button 
+                  onClick={handleToggleWishlist}
+                  className={`h-14 w-14 flex items-center justify-center rounded-full border transition-all shadow-sm ${
+                    isInWishlist(product.id || product._id)
+                      ? 'bg-red-50 border-red-200 text-red-500 hover:bg-red-100'
+                      : 'bg-surface border-border text-text-secondary hover:text-red-500 hover:border-red-200 hover:bg-red-50 dark:hover:bg-red-900/20'
+                  }`}
+                >
+                  <Heart className={`w-6 h-6 ${isInWishlist(product.id || product._id) ? 'fill-current' : ''}`} />
                 </button>
                 <button className="h-14 w-14 flex items-center justify-center rounded-full border border-border bg-surface text-text-secondary hover:text-primary hover:border-primary/20 hover:bg-primary/5 transition-all shadow-sm">
                   <Share2 className="w-6 h-6" />

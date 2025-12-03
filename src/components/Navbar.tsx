@@ -6,7 +6,9 @@ import { ShoppingCart, User, Menu, X, Search, LogOut, LogIn } from 'lucide-react
 import { useEffect, useState, useRef } from 'react';
 import { useAuth, useLogout } from '@/hooks/auth';
 import { useCart } from '@/hooks/useCart';
+import { useWishlist } from '@/context/WishlistContext';
 import { ThemeToggle } from './ThemeToggle';
+import { Heart } from 'lucide-react';
 
 
 const navLinks = [
@@ -22,6 +24,7 @@ export function Navbar() {
   const { isAuthenticated, checkAuth } = useAuth();
   const { logout, isLoading: isLoggingOut } = useLogout();
   const { cartCount } = useCart();
+  const { wishlistCount } = useWishlist();
   const pathname = usePathname();
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -115,7 +118,15 @@ export function Navbar() {
           {/* Theme Toggle */}
           <ThemeToggle />
           
-          
+          <Link href="/wishlist" className="relative p-2 hover:bg-surface rounded-full transition-colors" title="Wishlist">
+            <Heart className="h-5 w-5 text-text-primary" />
+            {wishlistCount > 0 && (
+              <span className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full animate-pulse">
+                {wishlistCount > 99 ? '99+' : wishlistCount}
+              </span>
+            )}
+          </Link>
+
           <Link href="/cart" className="relative p-2 hover:bg-surface rounded-full transition-colors" title="Cart">
             <ShoppingCart className="h-5 w-5 text-text-primary" />
             {cartCount > 0 && (

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Trash2, ChevronRight, Home } from "lucide-react";
+import Swal from "sweetalert2";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/auth";
 import { CartItem } from "@/components/cart/CartItem";
@@ -37,9 +38,23 @@ export default function CartPage() {
   }
 
   const handleClearCart = async () => {
-    const confirmed = window.confirm("Are you sure you want to clear your entire cart?");
-    if (confirmed) {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    });
+
+    if (result.isConfirmed) {
       await clearAllItems();
+      Swal.fire({
+        title: "Deleted!",
+        text: "Your cart has been cleared.",
+        icon: "success"
+      });
     }
   };
 

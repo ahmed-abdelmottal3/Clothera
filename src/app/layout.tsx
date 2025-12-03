@@ -6,6 +6,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { CartProvider } from "@/context/CartContext";
+import { WishlistProvider } from "@/context/WishlistContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,10 +35,12 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <CartProvider>
-            <Toaster />
-            <Navbar />
-            {children}
-            <Footer />
+            <WishlistProvider>
+              <Toaster />
+              <Navbar />
+              {children}
+              <Footer />
+            </WishlistProvider>
           </CartProvider>
         </ThemeProvider>
       </body>

@@ -6,6 +6,7 @@ import { Star, ShoppingCart, Heart } from 'lucide-react';
 import { Product } from '@/types/product';
 import { Button } from '@/components/ui/Button';
 import { useCart } from '@/hooks/useCart';
+import { useWishlist } from '@/context/WishlistContext';
 import { useAuth } from '@/hooks/auth';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -17,8 +18,10 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { addItem } = useCart();
+  const { addItemToWishlist, removeItemFromWishlist, isInWishlist } = useWishlist();
   const { isAuthenticated } = useAuth();
   const [isAdding, setIsAdding] = useState(false);
+  const [isWishlisting, setIsWishlisting] = useState(false);
   const router = useRouter();
 
   const handleAddToCart = async (e: React.MouseEvent) => {
@@ -38,6 +41,30 @@ export function ProductCard({ product }: ProductCardProps) {
       console.error('Failed to add to cart:', error);
     } finally {
       setIsAdding(false);
+    }
+  };
+
+  const handleWishlist = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!isAuthenticated) {
+      toast.error('Please sign in to manage wishlist');
+      router.push('/sign-in');
+      return;
+    }
+
+    setIsWishlisting(true);
+    try {
+      if (isInWishlist(product.id)) {
+        await removeItemFromWishlist(product.id);
+      } else {
+        await addItemToWishlist(product.id);
+      }
+    } catch (error) {
+      console.error('Failed to update wishlist:', error);
+    } finally {
+      setIsWishlisting(false);
     }
   };
 
@@ -64,13 +91,15 @@ export function ProductCard({ product }: ProductCardProps) {
           {/* Quick Actions */}
           <div className="absolute right-3 top-3 flex flex-col gap-2 opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
             <button 
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-              className="p-2 bg-surface rounded-full shadow-md hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20 transition-colors border border-border"
+              onClick={handleWishlist}
+              disabled={isWishlisting}
+              className={`p-2 rounded-full shadow-md transition-colors border border-border ${
+                isInWishlist(product.id)
+                  ? 'bg-red-50 text-red-500 hover:bg-red-100'
+                  : 'bg-surface hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20'
+              }`}
             >
-              <Heart className="h-5 w-5" />
+              <Heart className={`h-5 w-5 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
             </button>
           </div>
         </div>
