@@ -26,7 +26,7 @@ const dressStyles = [
 
 export function DressStyleCategories() {
   return (
-    <section className="w-full py-12 md:py-16 bg-[#F0F0F0] rounded-3xl">
+    <section className="w-full py-12 md:py-16 bg-neutral rounded-3xl">
       <div className="container mx-auto px-4">
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary mb-2">

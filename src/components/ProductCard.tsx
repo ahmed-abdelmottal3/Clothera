@@ -79,8 +79,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
             <Button 
               size="sm" 
-              variant="secondary"
-              className="rounded-full w-10 h-10 p-0 flex items-center justify-center"
+              className="rounded-full w-10 h-10 p-0 flex items-center justify-center bg-secondary hover:bg-secondary-light text-white transition-colors"
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
