@@ -201,13 +201,16 @@ export const useResetPassword = () => {
 // Hook to check if user is authenticated
 export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const checkAuth = useCallback(() => {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem("token");
       setIsAuthenticated(!!token);
+      setIsLoading(false);
       return !!token;
     }
+    setIsLoading(false);
     return false;
   }, []);
 
@@ -218,6 +221,7 @@ export const useAuth = () => {
 
   return {
     isAuthenticated,
+    isLoading,
     checkAuth,
   };
 };

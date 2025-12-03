@@ -1,14 +1,46 @@
+"use client";
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Star, ShoppingCart, Heart } from 'lucide-react';
 import { Product } from '@/types/product';
 import { Button } from '@/components/ui/Button';
+import { useCart } from '@/hooks/useCart';
+import { useAuth } from '@/hooks/auth';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 interface ProductCardProps {
   product: Product;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
+  const { addItem } = useCart();
+  const { isAuthenticated } = useAuth();
+  const [isAdding, setIsAdding] = useState(false);
+  const router = useRouter();
+
+  const handleAddToCart = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!isAuthenticated) {
+      toast.error('Please sign in to add items to cart');
+      router.push('/sign-in');
+      return;
+    }
+
+    setIsAdding(true);
+    try {
+      await addItem(product.id);
+    } catch (error) {
+      console.error('Failed to add to cart:', error);
+    } finally {
+      setIsAdding(false);
+    }
+  };
+
   return (
     <Link href={`/products/${product.id}`} className="block h-full">
       <div className="group bg-surface rounded-2xl overflow-hidden border border-border hover:shadow-xl transition-all duration-300 flex flex-col h-full cursor-pointer">
@@ -79,13 +111,15 @@ export function ProductCard({ product }: ProductCardProps) {
 
             <Button 
               size="sm" 
-              className="rounded-full w-10 h-10 p-0 flex items-center justify-center bg-secondary hover:bg-secondary-light text-white transition-colors"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
+              className="rounded-full w-10 h-10 p-0 flex items-center justify-center bg-secondary hover:bg-secondary-light text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleAddToCart}
+              disabled={isAdding}
             >
-              <ShoppingCart className="h-5 w-5" />
+              {isAdding ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <ShoppingCart className="h-5 w-5" />
+              )}
             </Button>
           </div>
         </div>
