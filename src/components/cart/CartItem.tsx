@@ -16,6 +16,7 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
   const [isRemoving, setIsRemoving] = useState(false);
 
   const handleIncrement = async () => {
+    if (!item.product?._id) return;
     setIsUpdating(true);
     try {
       // Use product._id instead of item._id
@@ -26,7 +27,7 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
   };
 
   const handleDecrement = async () => {
-    if (item.count <= 1) return;
+    if (!item.product?._id || item.count <= 1) return;
     setIsUpdating(true);
     try {
       // Use product._id instead of item._id
@@ -37,6 +38,7 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
   };
 
   const handleRemove = async () => {
+    if (!item.product?._id) return;
     setIsRemoving(true);
     try {
       // Use product._id instead of item._id
@@ -57,12 +59,18 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
       <div className="flex gap-4 md:gap-6">
         {/* Product Image */}
         <div className="relative w-24 h-24 md:w-32 md:h-32 flex-shrink-0 rounded-xl overflow-hidden bg-background">
-          <Image
-            src={item.product.imageCover}
-            alt={item.product.title}
-            fill
-            className="object-cover"
-          />
+          {item.product?.imageCover ? (
+            <Image
+              src={item.product.imageCover}
+              alt={item.product?.title || "Product"}
+              fill
+              className="object-cover"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <span className="text-text-secondary text-xs">No Image</span>
+            </div>
+          )}
         </div>
 
         {/* Product Details */}
@@ -70,10 +78,10 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
           <div className="flex justify-between items-start gap-4">
             <div className="flex-1 min-w-0">
               <h3 className="text-lg md:text-xl font-bold text-text-primary mb-1 truncate">
-                {item.product.title}
+                {item.product?.title || "Unknown Product"}
               </h3>
               <p className="text-sm text-text-secondary mb-2">
-                {item.product.category?.name}
+                {item.product?.category?.name || "Uncategorized"}
               </p>
               <p className="text-lg md:text-xl font-bold text-primary">
                 ${item.price.toFixed(2)}

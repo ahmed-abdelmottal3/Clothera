@@ -10,9 +10,12 @@ export async function registerUser(values: SignUpData) {
 
     return response.data;
   } catch (error: unknown) {
-    const err = error as AxiosError<{ message: string }>;
+    const err = error as AxiosError<{ message?: string; errors?: Array<{ msg: string }>; error?: string }>;
+    console.error("Registration error details:", err.response?.data);
     const message =
+      err.response?.data?.errors?.[0]?.msg ||
       err.response?.data?.message ||
+      err.response?.data?.error ||
       err.message ||
       "Something went wrong";
     toast.error(message);
@@ -27,9 +30,12 @@ export async function signInUser(values: SignInData) {
 
     return response.data;
   } catch (error: unknown) {
-    const err = error as AxiosError<{ message: string }>;
+    const err = error as AxiosError<{ message?: string; errors?: Array<{ msg: string }>; error?: string }>;
+    console.error("Sign in error details:", err.response?.data);
     const message =
+      err.response?.data?.errors?.[0]?.msg ||
       err.response?.data?.message ||
+      err.response?.data?.error ||
       err.message ||
       "Something went wrong";
     toast.error(message);

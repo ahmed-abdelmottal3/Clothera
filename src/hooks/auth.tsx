@@ -6,6 +6,7 @@ import { registerUser, signInUser, forgotPassword, verifyResetCode, resetPasswor
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import Cookies from "js-cookie";
 
 export const useSignUp = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -60,6 +61,7 @@ export const useSignIn = () => {
       const response = await signInUser(data);
       if (response.token) {
         localStorage.setItem("token", response.token);
+        Cookies.set("token", response.token, { expires: 7, path: '/', sameSite: 'lax' });
       }
       toast.success("Login successful!");
       reset();
@@ -214,8 +216,8 @@ export const useAuth = () => {
     return false;
   }, []);
 
-  // Check auth on mount
   useEffect(() => {
+    // eslint-disable-next-line
     checkAuth();
   }, [checkAuth]);
 
@@ -237,6 +239,7 @@ export const useLogout = () => {
       // Remove token from localStorage
       if (typeof window !== 'undefined') {
         localStorage.removeItem("token");
+        Cookies.remove("token", { path: '/' });
       }
       
       // Show success message

@@ -39,10 +39,24 @@ export function CartProvider({ children }: { children: ReactNode }) {
     try {
       const response: CartResponse = await getCart();
       setCart(response.data);
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Failed to load cart", err);
-      setError("Failed to load cart");
-      setCart(null);
+      
+      // Check if error is "no cart exists" - this is normal for new users
+      const errorMessage = (err as { response?: { data?: { message?: string } } })?.response?.data?.message || '';
+      const isNoCartError = errorMessage.toLowerCase().includes('no cart') || 
+                           errorMessage.toLowerCase().includes('cart not found') ||
+                           errorMessage.toLowerCase().includes('there is no cart');
+      
+      if (isNoCartError) {
+        // No cart exists yet - this is normal, treat as empty cart
+        setCart(null);
+        setError(null);
+      } else {
+        // Actual error occurred
+        setError("Failed to load cart");
+        setCart(null);
+      }
     } finally {
       setIsLoading(false);
     }

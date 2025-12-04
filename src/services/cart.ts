@@ -13,7 +13,16 @@ export async function getCart(): Promise<CartResponse> {
   } catch (error: unknown) {
     const err = error as AxiosError<{ message: string }>;
     const message = err.response?.data?.message || err.message || "Failed to fetch cart";
-    console.error("Error fetching cart:", message);
+    
+    // Don't log error if it's just "no cart exists" - this is normal
+    const isNoCartError = message.toLowerCase().includes('no cart') || 
+                         message.toLowerCase().includes('cart not found') ||
+                         message.toLowerCase().includes('there is no cart');
+    
+    if (!isNoCartError) {
+      console.error("Error fetching cart:", message);
+    }
+    
     throw error;
   }
 }

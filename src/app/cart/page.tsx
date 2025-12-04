@@ -59,7 +59,7 @@ export default function CartPage() {
   };
 
   const handleCheckout = () => {
-    alert("Checkout functionality coming soon!");
+    router.push("/checkout");
   };
 
   const subtotal = cart?.totalCartPrice || 0;

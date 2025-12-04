@@ -2,12 +2,14 @@ import React, { ButtonHTMLAttributes, ReactNode } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'sm' | 'md' | 'lg';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
   isLoading?: boolean;
   children: ReactNode;
 }
 
 export const Button: React.FC<ButtonProps> = ({
   size = 'md',
+  variant = 'primary',
   isLoading = false,
   children,
   disabled,
@@ -28,10 +30,16 @@ export const Button: React.FC<ButtonProps> = ({
     lg: 'px-8 py-4 text-lg',
   };
 
+  const variantClasses = {
+    primary: 'bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/20',
+    secondary: 'bg-secondary text-white hover:bg-secondary/90 shadow-lg shadow-secondary/20',
+    outline: 'border-2 border-primary text-primary bg-transparent hover:bg-primary hover:text-white',
+    ghost: 'bg-transparent text-primary hover:bg-primary/10',
+  };
 
   return (
     <button
-      className={`${baseClasses} ${sizeClasses[size]} ${className}`}
+      className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
       disabled={disabled || isLoading}
       {...props}
     >

@@ -83,6 +83,18 @@ export function Navbar() {
               </Link>
             );
           })}
+          {isAuthenticated && (
+            <Link 
+              href="/allorders" 
+              className={`transition-colors font-medium ${
+                pathname === '/allorders'
+                  ? 'text-primary border-b-2 border-primary' 
+                  : 'text-text-secondary hover:text-primary'
+              }`}
+            >
+              Orders
+            </Link>
+          )}
         </div>
 
         {/* Actions */}
@@ -201,6 +213,20 @@ export function Navbar() {
               </Link>
             );
           })}
+          
+          {isAuthenticated && (
+            <Link 
+              href="/orders" 
+              className={`block transition-colors font-medium ${
+                pathname === '/orders'
+                  ? 'text-primary' 
+                  : 'text-text-secondary hover:text-primary'
+              }`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Orders
+            </Link>
+          )}
           
           {/* Mobile Auth Actions */}
           <div className="pt-4 border-t border-border space-y-2">
