@@ -63,6 +63,10 @@ export const useSignIn = () => {
         localStorage.setItem("token", response.token);
         Cookies.set("token", response.token, { expires: 7, path: '/', sameSite: 'lax' });
       }
+      // Store user data from login response
+      if (response.user) {
+        localStorage.setItem("user", JSON.stringify(response.user));
+      }
       toast.success("Login successful!");
       reset();
       
@@ -239,6 +243,7 @@ export const useLogout = () => {
       // Remove token from localStorage
       if (typeof window !== 'undefined') {
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
         Cookies.remove("token", { path: '/' });
       }
       
