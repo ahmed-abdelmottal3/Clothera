@@ -7,6 +7,7 @@ import { Order } from "@/types/order";
 import OrderCard from "@/components/OrderCard";
 import { Package, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 export default function OrdersPage() {
   const { isAuthenticated, isLoading: authLoading } = useAuth();
@@ -29,7 +30,7 @@ export default function OrdersPage() {
         setError(null);
         
         // Get user ID from token
-        const token = localStorage.getItem("token");
+        const token = Cookies.get("token");
         if (!token) {
           router.push("/sign-in");
           return;

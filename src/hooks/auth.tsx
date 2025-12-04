@@ -60,7 +60,6 @@ export const useSignIn = () => {
     try {
       const response = await signInUser(data);
       if (response.token) {
-        localStorage.setItem("token", response.token);
         Cookies.set("token", response.token, { expires: 7, path: '/', sameSite: 'lax' });
       }
       // Store user data from login response
@@ -211,7 +210,7 @@ export const useAuth = () => {
 
   const checkAuth = useCallback(() => {
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
       setIsAuthenticated(!!token);
       setIsLoading(false);
       return !!token;
@@ -240,9 +239,8 @@ export const useLogout = () => {
   const logout = () => {
     setIsLoading(true);
     try {
-      // Remove token from localStorage
+      // Remove token and user data
       if (typeof window !== 'undefined') {
-        localStorage.removeItem("token");
         localStorage.removeItem("user");
         Cookies.remove("token", { path: '/' });
       }

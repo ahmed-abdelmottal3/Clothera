@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { User, MapPin, Shield, ArrowLeft } from "lucide-react";
 import { ProfileInfoForm } from "@/components/profile/ProfileInfoForm";
 import { AddressManager } from "@/components/profile/AddressManager";
 import { ChangePasswordForm } from "@/components/profile/ChangePasswordForm";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 type TabType = "profile" | "addresses" | "security";
 
@@ -30,7 +32,7 @@ export default function ProfilePage() {
     if (typeof window === "undefined") {
       return { isAuthenticated: false, isLoading: true };
     }
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     return { isAuthenticated: !!token, isLoading: false };
   });
 
