@@ -105,11 +105,29 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setIsLoading(true);
     setError(null);
     try {
+      console.log('Removing item:', itemId);
       const response = await removeCartItem(itemId);
-      setCart(response.data);
+      console.log('Remove response:', response);
+      
+      // Handle case where cart might be empty or response structure differs
+      if (response && response.data) {
+        console.log('Setting cart to response.data:', response.data);
+        setCart(response.data);
+      } else if (response && response.numOfCartItems === 0) {
+        // Cart is now empty
+        console.log('Cart is now empty');
+        setCart(null);
+      } else {
+        // Refetch cart to ensure we have the latest state
+        console.log('Refetching cart');
+        await fetchCart();
+      }
       return response;
     } catch (err) {
+      console.error('Remove error:', err);
       setError("Failed to remove item");
+      // Refetch cart on error to sync state
+      await fetchCart();
       throw err;
     } finally {
       setIsLoading(false);

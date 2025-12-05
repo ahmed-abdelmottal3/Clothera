@@ -7,7 +7,9 @@ import { ShippingAddress } from "@/types/order";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useAuth } from "@/hooks/auth";
-import { Loader2, ShoppingBag, CreditCard, Banknote } from "lucide-react";
+import { getAddresses } from "@/services/profile";
+import { Address } from "@/types/profile";
+import { Loader2, ShoppingBag, CreditCard, Banknote, MapPin, Check } from "lucide-react";
 import toast from "react-hot-toast";
 
 export default function CheckoutPage() {
@@ -16,12 +18,47 @@ export default function CheckoutPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<"cash" | "card">("card");
+  const [savedAddresses, setSavedAddresses] = useState<Address[]>([]);
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
+  const [isLoadingAddresses, setIsLoadingAddresses] = useState(true);
+  const [useNewAddress, setUseNewAddress] = useState(false);
   
   const [formData, setFormData] = useState<ShippingAddress>({
     details: "",
     phone: "",
     city: "",
   });
+
+  // Fetch saved addresses
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      if (!isAuthenticated) return;
+      
+      setIsLoadingAddresses(true);
+      try {
+        const addresses = await getAddresses();
+        setSavedAddresses(addresses);
+        // Auto-select first address if available
+        if (addresses.length > 0) {
+          setSelectedAddressId(addresses[0]._id);
+          setFormData({
+            details: addresses[0].details,
+            phone: addresses[0].phone,
+            city: addresses[0].city,
+          });
+        } else {
+          setUseNewAddress(true);
+        }
+      } catch (error) {
+        console.error("Failed to fetch addresses:", error);
+        setUseNewAddress(true);
+      } finally {
+        setIsLoadingAddresses(false);
+      }
+    };
+
+    fetchAddresses();
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -35,6 +72,26 @@ export default function CheckoutPage() {
       router.push("/cart");
     }
   }, [cart, cartLoading, router]);
+
+  const handleSelectAddress = (address: Address) => {
+    setSelectedAddressId(address._id);
+    setUseNewAddress(false);
+    setFormData({
+      details: address.details,
+      phone: address.phone,
+      city: address.city,
+    });
+  };
+
+  const handleUseNewAddress = () => {
+    setSelectedAddressId(null);
+    setUseNewAddress(true);
+    setFormData({
+      details: "",
+      phone: "",
+      city: "",
+    });
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -63,7 +120,7 @@ export default function CheckoutPage() {
       if (paymentMethod === "cash") {
         // Create cash order
         await createCashOrder(cart._id, { shippingAddress: formData });
-        router.push("/orders");
+        router.push("/allorders");
       } else {
         // Create checkout session for card payment
         const response = await createCheckoutSession(cart._id);
@@ -101,56 +158,121 @@ export default function CheckoutPage() {
           {/* Checkout Form */}
           <div className="lg:col-span-2">
             <form onSubmit={handleSubmit} className="bg-surface border border-border rounded-xl p-6 space-y-6">
-              {/* Shipping Address */}
+              {/* Saved Addresses Section */}
               <div>
-                <h2 className="text-2xl font-semibold text-text-primary mb-4">Shipping Address</h2>
-                <div className="space-y-4">
-                  <div>
-                    <label htmlFor="details" className="block text-sm font-medium text-text-primary mb-2">
-                      Street Address
-                    </label>
-                    <input
-                      type="text"
-                      id="details"
-                      name="details"
-                      value={formData.details}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary"
-                      placeholder="123 Main St, Apt 4B"
-                      required
-                    />
+                <h2 className="text-2xl font-semibold text-text-primary mb-4 flex items-center gap-2">
+                  <MapPin className="w-6 h-6" />
+                  Shipping Address
+                </h2>
+                
+                {isLoadingAddresses ? (
+                  <div className="flex items-center justify-center py-8">
+                    <Loader2 className="w-6 h-6 text-primary animate-spin" />
                   </div>
-                  <div>
-                    <label htmlFor="city" className="block text-sm font-medium text-text-primary mb-2">
-                      City
-                    </label>
-                    <input
-                      type="text"
-                      id="city"
-                      name="city"
-                      value={formData.city}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary"
-                      placeholder="New York"
-                      required
-                    />
+                ) : savedAddresses.length > 0 ? (
+                  <div className="space-y-4 mb-6">
+                    <p className="text-sm text-text-secondary">Select a saved address or add a new one</p>
+                    
+                    {/* Saved Address Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {savedAddresses.map((address) => (
+                        <button
+                          key={address._id}
+                          type="button"
+                          onClick={() => handleSelectAddress(address)}
+                          className={`p-4 border-2 rounded-xl text-left transition-all ${
+                            selectedAddressId === address._id && !useNewAddress
+                              ? "border-primary bg-primary/5 ring-2 ring-primary/20"
+                              : "border-border hover:border-primary/50"
+                          }`}
+                        >
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <p className="font-semibold text-text-primary">{address.name}</p>
+                              <p className="text-sm text-text-secondary mt-1">{address.details}</p>
+                              <p className="text-sm text-text-secondary">{address.city}</p>
+                              <p className="text-sm text-text-secondary">{address.phone}</p>
+                            </div>
+                            {selectedAddressId === address._id && !useNewAddress && (
+                              <div className="p-1 bg-primary rounded-full">
+                                <Check className="w-4 h-4 text-white" />
+                              </div>
+                            )}
+                          </div>
+                        </button>
+                      ))}
+                      
+                      {/* Add New Address Button */}
+                      <button
+                        type="button"
+                        onClick={handleUseNewAddress}
+                        className={`p-4 border-2 rounded-xl text-left transition-all border-dashed ${
+                          useNewAddress
+                            ? "border-primary bg-primary/5"
+                            : "border-border hover:border-primary/50"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <div className={`p-2 rounded-full ${useNewAddress ? "bg-primary" : "bg-surface border border-border"}`}>
+                            <MapPin className={`w-4 h-4 ${useNewAddress ? "text-white" : "text-text-secondary"}`} />
+                          </div>
+                          <span className="font-medium text-text-primary">Use New Address</span>
+                        </div>
+                      </button>
+                    </div>
                   </div>
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-text-primary mb-2">
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary"
-                      placeholder="+1 (555) 123-4567"
-                      required
-                    />
+                ) : null}
+
+                {/* Address Form (show when using new address or no saved addresses) */}
+                {(useNewAddress || savedAddresses.length === 0) && (
+                  <div className="space-y-4">
+                    <div>
+                      <label htmlFor="details" className="block text-sm font-medium text-text-primary mb-2">
+                        Street Address
+                      </label>
+                      <input
+                        type="text"
+                        id="details"
+                        name="details"
+                        value={formData.details}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary"
+                        placeholder="123 Main St, Apt 4B"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="city" className="block text-sm font-medium text-text-primary mb-2">
+                        City
+                      </label>
+                      <input
+                        type="text"
+                        id="city"
+                        name="city"
+                        value={formData.city}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary"
+                        placeholder="New York"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="phone" className="block text-sm font-medium text-text-primary mb-2">
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-text-primary"
+                        placeholder="+1 (555) 123-4567"
+                        required
+                      />
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* Payment Method */}

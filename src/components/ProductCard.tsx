@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Star, ShoppingCart, Heart } from 'lucide-react';
+import { Star, ShoppingCart, Heart, Trash2 } from 'lucide-react';
 import { Product } from '@/types/product';
 import { Button } from '@/components/ui/Button';
 import { useCart } from '@/hooks/useCart';
@@ -17,28 +17,45 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const { addItem } = useCart();
+  const { addItem, cart, removeItem } = useCart();
   const { addItemToWishlist, removeItemFromWishlist, isInWishlist } = useWishlist();
   const { isAuthenticated } = useAuth();
   const [isAdding, setIsAdding] = useState(false);
   const [isWishlisting, setIsWishlisting] = useState(false);
   const router = useRouter();
 
-  const handleAddToCart = async (e: React.MouseEvent) => {
+  const cartItem = cart?.products?.find(item => {
+    const itemProductId = typeof item.product === 'string' 
+      ? item.product 
+      : (item.product.id || item.product._id);
+    const currentProductId = product.id || product._id;
+    return itemProductId === currentProductId;
+  });
+  const isInCart = !!cartItem;
+
+  const handleCartAction = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
     if (!isAuthenticated) {
-      toast.error('Please sign in to add items to cart');
+      toast.error('Please sign in to manage cart');
       router.push('/sign-in');
       return;
     }
 
     setIsAdding(true);
     try {
-      await addItem(product.id);
+      if (isInCart && cartItem) {
+        // Use product ID for removal (API expects product ID, not cart item ID)
+        const productId = typeof cartItem.product === 'string' 
+          ? cartItem.product 
+          : (cartItem.product.id || cartItem.product._id);
+        await removeItem(productId);
+      } else {
+        await addItem(product.id);
+      }
     } catch (error) {
-      console.error('Failed to add to cart:', error);
+      console.error('Failed to update cart:', error);
     } finally {
       setIsAdding(false);
     }
@@ -140,14 +157,18 @@ export function ProductCard({ product }: ProductCardProps) {
 
             <Button 
               size="sm" 
-              className="rounded-full w-10 h-10 p-0 flex items-center justify-center bg-secondary hover:bg-secondary-light text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-              onClick={handleAddToCart}
+              className={`rounded-full w-10 h-10 p-0 flex items-center justify-center transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                isInCart 
+                  ? 'bg-red-500 hover:bg-red-600 text-white shadow-lg shadow-red-500/20' 
+                  : 'bg-secondary hover:bg-secondary/90 text-white shadow-lg shadow-secondary/20'
+              }`}
+              onClick={handleCartAction}
               disabled={isAdding}
             >
               {isAdding ? (
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
               ) : (
-                <ShoppingCart className="h-5 w-5" />
+                isInCart ? <Trash2 className="h-5 w-5" /> : <ShoppingCart className="h-5 w-5" />
               )}
             </Button>
           </div>

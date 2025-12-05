@@ -19,7 +19,8 @@ import {
   ShoppingCart, 
   ChevronRight,
   Truck,
-  RotateCcw
+  RotateCcw,
+  Trash2
 } from 'lucide-react';
 
 export default function ProductDetailsPage() {
@@ -30,17 +31,40 @@ export default function ProductDetailsPage() {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<'description' | 'reviews'>('description');
   
-  const { addItem } = useCartContext();
+  const { addItem, cart, removeItem } = useCartContext();
   const { isInWishlist, addItemToWishlist, removeItemFromWishlist } = useWishlist();
 
-  const handleAddToCart = async () => {
+  const cartItem = cart?.products?.find(item => {
+    // Handle case where product might be just an ID string or an object
+    const itemProductId = typeof item.product === 'string' 
+      ? item.product 
+      : (item.product.id || item.product._id);
+      
+    const currentProductId = product?.id || product?._id;
+    
+    // Debug individual item check
+    // console.log('Checking item:', { itemProductId, currentProductId, match: itemProductId === currentProductId });
+    
+    return itemProductId === currentProductId;
+  });
+
+  const isInCart = !!cartItem;
+
+  const handleCartAction = async () => {
     if (!product) return;
+    
     try {
-      await addItem(product.id || product._id);
-      toast.success('Added to cart successfully');
+      if (isInCart && cartItem) {
+        // Use product ID for removal (API expects product ID, not cart item ID)
+        const productId = typeof cartItem.product === 'string' 
+          ? cartItem.product 
+          : (cartItem.product.id || cartItem.product._id);
+        await removeItem(productId);
+      } else {
+        await addItem(product.id || product._id);
+      }
     } catch (error) {
-      console.error('Error adding to cart:', error);
-      toast.error('Failed to add to cart');
+      console.error('Error updating cart:', error);
     }
   };
 
@@ -252,15 +276,24 @@ export default function ProductDetailsPage() {
               </div>
 
               <div className="flex gap-4">
-                <Button 
-                  className="flex-1 h-14 text-lg rounded-full shadow-xl shadow-secondary/20 hover:shadow-secondary/30 transition-all hover:-translate-y-1"
-                  variant="secondary"
-                  disabled={product.quantity === 0}
-                  onClick={handleAddToCart}
-                >
-                  <ShoppingCart className="w-5 h-5 mr-2" />
-                  Add to Cart
-                </Button>
+                  <Button 
+                    className="flex-1 h-14 text-lg rounded-full shadow-xl shadow-secondary/20 hover:shadow-secondary/30 transition-all hover:-translate-y-1"
+                    variant={isInCart ? "destructive" : "secondary"}
+                    disabled={product.quantity === 0}
+                    onClick={handleCartAction}
+                  >
+                    {isInCart ? (
+                      <>
+                        <Trash2 className="w-5 h-5 mr-2" />
+                        Remove from Cart
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingCart className="w-5 h-5 mr-2" />
+                        Add to Cart
+                      </>
+                    )}
+                  </Button>
                 <button 
                   onClick={handleToggleWishlist}
                   className={`h-14 w-14 flex items-center justify-center rounded-full border transition-all shadow-sm ${

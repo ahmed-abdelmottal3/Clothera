@@ -87,10 +87,6 @@ export default function SignInPage() {
 
       {/* Right Side - Image/Brand Section */}
       <div className="hidden lg:flex flex-1 bg-primary items-center justify-center p-12 relative overflow-hidden ">
-        {/* Decorative Elements */}
-        <div className="absolute top-[10%] right-[10%] w-[200px] h-[200px] bg-secondary rounded-full opacity-10" />
-        <div className="absolute bottom-[15%] left-[5%] w-[150px] h-[150px] bg-accent rounded-full opacity-10" />
-
         {/* Content */}
         <div className="z-10 text-center animate-slide-right">
           <div className="w-20 h-20 bg-surface rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">

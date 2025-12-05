@@ -129,10 +129,6 @@ export default function SignUpPage() {
 
       {/* Left Side - Image/Brand Section */}
       <div className="hidden lg:flex flex-1 bg-secondary items-center justify-center p-12 relative overflow-hidden">
-        {/* Decorative Elements */}
-        <div className="absolute top-[15%] left-[10%] w-[180px] h-[180px] bg-primary rounded-full opacity-10" />
-        <div className="absolute bottom-[10%] right-[8%] w-[120px] h-[120px] bg-accent rounded-full opacity-15" />
-
         {/* Content */}
         <div className="z-10 text-center animate-slide-left">
           <div className="w-20 h-20 bg-surface rounded-xl flex items-center justify-center mx-auto mb-6 text-4xl">

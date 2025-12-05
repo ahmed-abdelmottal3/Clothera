@@ -15,7 +15,6 @@ const navLinks = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
   { label: 'Shop', href: '/products' },
-  { label: 'Categories', href: '/categories' },
 ];
 
 export function Navbar() {
@@ -148,30 +147,32 @@ export function Navbar() {
             )}
           </Link>
           
-          {/* Conditional auth buttons */}
-          {!isAuthenticated ? (
-            <Link href="/sign-in" className="p-2 hover:bg-surface rounded-full transition-colors" title="Sign In">
-              <LogIn className="h-5 w-5 text-text-primary" />
-            </Link>
-          ) : (
-            <div className="flex items-center gap-2">
-              <Link 
-                href="/profile" 
-                className="p-2 hover:bg-surface rounded-full transition-colors"
-                title="Profile"
-              >
-                <User className="h-5 w-5 text-text-primary" />
+          {/* Conditional auth buttons - Desktop only */}
+          <div className="hidden md:flex items-center gap-2">
+            {!isAuthenticated ? (
+              <Link href="/sign-in" className="p-2 hover:bg-surface rounded-full transition-colors" title="Sign In">
+                <LogIn className="h-5 w-5 text-text-primary" />
               </Link>
-              <button 
-                onClick={handleLogout}
-                disabled={isLoggingOut}
-                className="p-2 hover:bg-surface rounded-full transition-colors disabled:opacity-50"
-                title="Logout"
-              >
-                <LogOut className="h-5 w-5 text-text-primary" />
-              </button>
-            </div>
-          )}
+            ) : (
+              <>
+                <Link 
+                  href="/profile" 
+                  className="p-2 hover:bg-surface rounded-full transition-colors"
+                  title="Profile"
+                >
+                  <User className="h-5 w-5 text-text-primary" />
+                </Link>
+                <button 
+                  onClick={handleLogout}
+                  disabled={isLoggingOut}
+                  className="p-2 hover:bg-surface rounded-full transition-colors disabled:opacity-50"
+                  title="Logout"
+                >
+                  <LogOut className="h-5 w-5 text-text-primary" />
+                </button>
+              </>
+            )}
+          </div>
 
           {/* Mobile Menu Button */}
           <button 
