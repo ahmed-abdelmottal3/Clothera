@@ -20,9 +20,15 @@ export default function Home() {
     const fetchProducts = async () => {
       try {
         const response = await getAllProducts();
-        setProducts(response.data);
+        // Safety check for response.data
+        if (response && response.data && Array.isArray(response.data)) {
+          setProducts(response.data);
+        } else {
+          setProducts([]);
+        }
       } catch (error) {
         console.error("Failed to load products", error);
+        setProducts([]);
       } finally {
         setIsLoading(false);
       }

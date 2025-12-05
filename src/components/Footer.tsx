@@ -19,9 +19,9 @@ export function Footer() {
             <h4 className="font-semibold text-text-primary mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm text-text-secondary">
               <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
-              <li><Link href="/shop" className="hover:text-primary transition-colors">Shop</Link></li>
-              <li><Link href="/about" className="hover:text-primary transition-colors">About Us</Link></li>
-              <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
+              <li><Link href="/products" className="hover:text-primary transition-colors">Shop</Link></li>
+              <li><Link href="/wishlist" className="hover:text-primary transition-colors">Wishlist</Link></li>
+              <li><Link href="/cart" className="hover:text-primary transition-colors">Cart</Link></li>
             </ul>
           </div>
 
@@ -29,10 +29,10 @@ export function Footer() {
           <div>
             <h4 className="font-semibold text-text-primary mb-4">Customer Service</h4>
             <ul className="space-y-2 text-sm text-text-secondary">
-              <li><Link href="/faq" className="hover:text-primary transition-colors">FAQ</Link></li>
-              <li><Link href="/shipping" className="hover:text-primary transition-colors">Shipping & Returns</Link></li>
-              <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="hover:text-primary transition-colors">Terms & Conditions</Link></li>
+              <li><Link href="/allorders" className="hover:text-primary transition-colors">My Orders</Link></li>
+              <li><Link href="/profile" className="hover:text-primary transition-colors">My Account</Link></li>
+              <li><span className="cursor-default">Shipping & Returns</span></li>
+              <li><span className="cursor-default">Privacy Policy</span></li>
             </ul>
           </div>
 
