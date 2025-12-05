@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { SidebarFilter } from '@/components/SidebarFilter';
 import { ProductCard } from '@/components/ProductCard';
@@ -13,7 +13,7 @@ import { useProductFilter } from '@/hooks/useProductFilter';
 
 const ITEMS_PER_PAGE = 12;
 
-export default function ProductsPage() {
+function ProductsContent() {
   const searchParams = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -56,7 +56,7 @@ export default function ProductsPage() {
     if (category && products.length > 0) {
       handleFilterChange('category', category);
     }
-  }, [searchParams, products.length]);
+  }, [searchParams, products.length, handleFilterChange]);
 
   // Derived Data for Sidebar Options
   const categories = useMemo(() => Array.from(new Set(products.map(p => p.category.name))), [products]);
@@ -163,5 +163,22 @@ export default function ProductsPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+// Loading fallback component
+function ProductsLoading() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <Loader2 className="h-12 w-12 animate-spin text-primary" />
+    </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<ProductsLoading />}>
+      <ProductsContent />
+    </Suspense>
   );
 }
