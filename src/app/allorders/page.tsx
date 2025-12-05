@@ -110,8 +110,10 @@ export default function OrdersPage() {
           ordersData = response;
         }
         
-        // Sort orders by date (newest first)
-        ordersData.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        // Sort orders by date (newest first) - only if we have orders
+        if (ordersData && ordersData.length > 0) {
+          ordersData.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        }
         
         setOrders(ordersData);
         setCurrentPage(1); // Reset to first page when data loads
