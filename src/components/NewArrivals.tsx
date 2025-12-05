@@ -10,10 +10,16 @@ interface NewArrivalsProps {
 }
 
 export function NewArrivals({ products }: NewArrivalsProps) {
-  // Get the 4 most recent products
-  const newProducts = products
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-    .slice(0, 4);
+  // Get the 4 most recent products - with safety check
+  const newProducts = products && products.length > 0
+    ? [...products]
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        .slice(0, 4)
+    : [];
+
+  if (newProducts.length === 0) {
+    return null;
+  }
 
   return (
     <section className="w-full py-12 md:py-16 bg-background">

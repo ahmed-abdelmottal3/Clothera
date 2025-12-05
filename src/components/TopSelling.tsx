@@ -10,8 +10,13 @@ interface TopSellingProps {
 }
 
 export function TopSelling({ products }: TopSellingProps) {
-  // Get top 4 products by sold count
-  const topProducts = products
+  // Early return if no products
+  if (!products || products.length === 0) {
+    return null;
+  }
+
+  // Get top 4 products by sold count - create copy to avoid mutating original
+  const topProducts = [...products]
     .filter((p) => p.sold !== null && p.sold > 0)
     .sort((a, b) => (b.sold || 0) - (a.sold || 0))
     .slice(0, 4);
@@ -19,7 +24,7 @@ export function TopSelling({ products }: TopSellingProps) {
   // If we don't have enough products with sales, fall back to highest rated
   const displayProducts = topProducts.length >= 4 
     ? topProducts 
-    : products.sort((a, b) => b.ratingsAverage - a.ratingsAverage).slice(0, 4);
+    : [...products].sort((a, b) => b.ratingsAverage - a.ratingsAverage).slice(0, 4);
 
   return (
     <section className="w-full py-12 md:py-16 bg-background">
