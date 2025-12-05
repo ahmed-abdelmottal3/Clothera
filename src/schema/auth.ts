@@ -17,3 +17,22 @@ export const signInSchema = z.object({
 })
 
 export type SignInSchema = z.infer<typeof signInSchema>;
+
+export const forgotPasswordSchema = z.object({
+    email: z.string().email("Invalid email address"),
+})
+
+export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
+
+export const verifyResetCodeSchema = z.object({
+    resetCode: z.string().min(6, "Code must be at least 6 characters long"),
+})
+
+export type VerifyResetCodeSchema = z.infer<typeof verifyResetCodeSchema>;
+
+export const resetPasswordSchema = z.object({
+    email: z.string().email("Invalid email address"),
+    newPassword: z.string().min(6, "Password must be at least 6 characters long"),
+})
+
+export type ResetPasswordSchema = z.infer<typeof resetPasswordSchema>;
